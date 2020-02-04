@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Kodinger">
+    <title>注册</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/home/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/home/css/my-login.css}">
+</head>
+
+<body class="my-login-page">
+<section class="h-100">
+    <div class="container h-100">
+        <div class="row justify-content-md-center h-100">
+            <div class="card-wrapper">
+                <div class="card fat">
+                    <div class="card-body">
+                        <h4 class="card-title">注册</h4>
+                        <span th:if="${errorMsg} != null" style="color: red;">[[${errorMsg}]]</span>
+                        <form method="POST" action="/member/register">
+
+                            <div class="form-group">
+                                <label for="loginacct">登录名</label>
+                                <input id="loginacct" type="text" class="form-control" name="loginacct" required autofocus>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">登录密码</label>
+                                <input id="password" type="password" class="form-control" name="userpswd" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sex">性别</label>
+                                <input type="radio" class="radio-inline" id="sex" name="sex" value="男" checked> 男
+                                <input type="radio" class="radio-inline" id="" name="sex" value="女" > 女
+                                <!--<div>-->
+                                    <!--<label class="radio-inline">-->
+                                        <!--<input type="radio" name="sex" id="sex" value="男" checked> 男-->
+                                    <!--</label>-->
+                                    <!--<label class="radio-inline">-->
+                                        <!--<input type="radio" name="sex" id=""  value="女"> 女-->
+                                    <!--</label>-->
+                                <!--</div>-->
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">邮箱</label>
+                                <input type="text" class="form-control" id="email" name="email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address">居住楼层</label>
+                                <input type="text" class="form-control" id="address" name="address">
+                            </div>
+
+                            <div class="form-group no-margin">
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    注册
+                                </button>
+                            </div>
+                            <div class="margin-top20 text-center">
+                                已经有账户? <a href="/go/to/login">点此登录</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="footer">
+                    <a>xx小区物业管理系统</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script th:src="@{/home/js/jquery.min.js}"></script>
+<script th:src="@{/home/js/bootstrap.min.js}"></script>
+<script th:src="@{/home/js/my-login.js}"></script>
+<script th:src="@{/home/js/laydate/laydate.js}"></script>
+</body>
+
+</html>
