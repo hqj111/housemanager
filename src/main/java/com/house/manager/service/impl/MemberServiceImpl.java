@@ -44,6 +44,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void saveMember(MemberPO memberPO) {
+        memberPO.setTypeId(1);
         memberPOMapper.insert(memberPO);
     }
 
@@ -54,7 +55,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<MemberPO> getAllMembers() {
-        return memberPOMapper.selectByExample(new MemberPOExample());
+        MemberPOExample memberPOExample = new MemberPOExample();
+        memberPOExample.createCriteria().andTypeIdNotEqualTo(2);
+        return memberPOMapper.selectByExample(memberPOExample);
     }
 
     @Override

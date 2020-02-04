@@ -22,6 +22,7 @@ public class HouseConstant {
 	public static final String MESSAGE_LOGIN_SUCCESS = "登录成功！";
 	public static final String MESSAGE_DATA_EMPTY = "数据不存在！";
 	public static final String MESSAGE_MEMBER_DO_NOT_BE_USE = "用户不能使用！请联系管理员！";
+	public static final String NOT_MANAGER = "暂时不是管理员！不得登录后台！";
 
     static {
 		EXCEPTION_MESSAGE_MAP.put("java.lang.ArithmeticException", "系统在进行数学运算时发生错误");

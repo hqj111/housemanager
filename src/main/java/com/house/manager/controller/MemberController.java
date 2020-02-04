@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -33,11 +30,12 @@ public class MemberController {
     private MemberService memberService;
 
     @PostMapping("/member/add")
+    @ResponseBody
     public String addMember(MemberPO memberPO, Model model){
 
         if(memberPO == null){
             model.addAttribute("errorMsg", HouseConstant.MESSAGE_INPUT_INVALID);
-            return "redirect:/backup/member/manage/1";
+            return "true";
         }
 
         try {
@@ -47,7 +45,7 @@ public class MemberController {
             model.addAttribute("errorMsg", HouseConstant.MESSAGE_ERROR_INTERNAL);
         }
 
-        return "redirect:/backup/member/manage/1";
+        return "true";
     }
 
     @PostMapping("/member/modify")
@@ -55,7 +53,7 @@ public class MemberController {
 
         if(memberPO == null){
             model.addAttribute("errorMsg", HouseConstant.MESSAGE_INPUT_INVALID);
-            return "member-manager";
+            return "redirect:/backup/member/manage/1";
         }
 
         try {
@@ -63,10 +61,10 @@ public class MemberController {
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("errorMsg", HouseConstant.MESSAGE_ERROR_INTERNAL);
-            return "member-manager";
+            return "redirect:/backup/member/manage/1";
         }
 
-        return "member-manager";
+        return "redirect:/backup/member/manage/1";
     }
 
     @RequestMapping("/member/delete/{id}")
@@ -74,7 +72,7 @@ public class MemberController {
         //非空判断
         if (id == null) {
             model.addAttribute("errorMsg", HouseConstant.MESSAGE_ID_INVALID);
-            return "member-manager";
+            return "redirect:/backup/member/manage/1";
         }
         //删除
         try {
@@ -82,10 +80,10 @@ public class MemberController {
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("errorMsg", HouseConstant.MESSAGE_ERROR_INTERNAL);
-            return "member-manager";
+            return "redirect:/backup/member/manage/1";
         }
 
-        return "member-manager";
+        return "redirect:/backup/member/manage/1";
     }
 
     @RequestMapping("/backup/member/manage/{pageNum}")
@@ -97,7 +95,7 @@ public class MemberController {
 
 
 
-        PageHelper.startPage(pageNum, 3);
+        PageHelper.startPage(pageNum, 8);
 
         //需要放在中间才行
         List<MemberPO> allMembers = memberService.getAllMembers();
@@ -181,10 +179,16 @@ public class MemberController {
             return "member-login";
         }
 
+        if(memberPOFromSql.getTypeId() != 2){
+            model.addAttribute("errorMsg", HouseConstant.NOT_MANAGER);
+            return "member-login";
+        }
+
         if (memberPOFromSql.getIsvalid() == 0) {
             model.addAttribute("errorMsg", HouseConstant.MESSAGE_MEMBER_DO_NOT_BE_USE);
             return "member-login";
         }
+
 
         if (!Objects.equals(memberPOFromSql.getUserpswd(), memberLoginVo.getUserpswd())) {
             model.addAttribute("errorMsg", HouseConstant.MESSAGE_LOGIN_FAILED);
