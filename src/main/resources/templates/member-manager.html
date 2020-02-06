@@ -8,9 +8,9 @@
 <div class="lyear-layout-web">
     <div class="lyear-layout-container">
 
-        <header th:insert="~{commons/part::header(var='用户管理')}"></header>
+        <header th:insert="~{commons/part::header(var='用户信息管理')}"></header>
 
-        <aside th:insert="~{commons/part::leaf}"></aside>
+        <aside th:insert="~{commons/part::leaf(activeNag =1)}"></aside>
 
         <!--页面主要内容-->
         <main class="lyear-layout-content">
@@ -113,6 +113,7 @@
 
         </main>
         <!--End 页面主要内容-->
+
     </div>
 </div>
 <!-- dialog -->

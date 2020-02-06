@@ -62,6 +62,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void modify(MemberPO memberPO) {
+        memberPO.setTypeId(1);
         memberPOMapper.updateByPrimaryKey(memberPO);
     }
 }

@@ -19,8 +19,11 @@ spring:
     encoding: utf-8
     servlet:
       content-type: text/html
-#  mvc:
-#    static-path-pattern: /images/**
+
+#上传图片路径
+file:
+  upload:
+    filepath: D:\houseManage\upload\image\
 
 
 #mybatis配置
@@ -34,4 +37,3 @@ pagehelper:
   helper-dialect: mysql
   reasonable: true
   support-methods-arguments: true
-

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.house.manager.entity.po.MemberPO;
 import com.house.manager.entity.po.MemberPOExample;
 import com.house.manager.mapper.MemberPOMapper;
+import com.house.manager.util.FileUploadUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,5 +43,10 @@ class HousemanagerApplicationTests {
         List<MemberPO> memberPOList = memberPOMapper.selectByExample(new MemberPOExample());
         PageInfo<MemberPO> memberPOPageInfo = new PageInfo<>(memberPOList);
         System.out.println(memberPOPageInfo);
+    }
+
+    @Test
+    public void testFilePath(){
+
     }
 }
