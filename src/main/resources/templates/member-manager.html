@@ -57,7 +57,9 @@
                                             <td th:text="${member.username}"></td>
                                             <td th:text="${member.sex}"></td>
                                             <td th:text="${member.email}"></td>
-                                            <td th:text="${member.headpicPath}"></td>
+                                            <td>
+                                                <img th:src="${member.headpicPath}" width="100px" height="50px">
+                                            </td>
                                             <td th:text="${member.message}"></td>
                                             <td th:text="${member.address}"></td>
                                             <!--<td th:text="${member.isvalid}"></td>-->

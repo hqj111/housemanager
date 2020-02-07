@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh">
+<head th:insert="~{commons/part::head}"></head>
+<body>
+<div class="lyear-layout-web">
+    <div class="lyear-layout-container">
+
+
+        <header th:insert="~{commons/part::header(var='预约维修管理')}"></header>
+
+        <aside th:insert="~{commons/part::leaf(activeNag =3)}"></aside>
+
+        <!--页面主要内容-->
+        <main class="lyear-layout-content">
+
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>编号</th>
+                                            <th>业主名</th>
+                                            <th>地址</th>
+                                            <th>标题</th>
+                                            <th>描述</th>
+                                            <th>预约时间</th>
+                                            <th>创建时间</th>
+                                            <th>状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="maintain: ${maintains.getList()}">
+                                            <td th:text="${maintain.id}"></td>
+                                            <td th:text="${maintain.memberPO.username}"></td>
+                                            <td th:text="${maintain.memberPO.address}"></td>
+                                            <td th:text="${maintain.title}"></td>
+                                            <td th:text="${maintain.description.substring(0, 20) + '......'}"></td>
+                                            <td th:text="${#dates.format(maintain.appointmentTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                            <td th:text="${#dates.format(maintain.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                            <td>
+                                                <span th:if="${maintain.status} == 1"
+                                                      class="label label-success">已处理</span>
+                                                <span th:if="${maintain.status} == 0"
+                                                      class="label label-danger">未处理</span>
+                                            </td>
+                                            <td>
+
+                                                <button type="button"
+                                                        th:onclick="tableButtonClick(
+                                                        {id:[[${maintain.id}]],userid:[[${maintain.userId}]],username:[[${maintain.memberPO.username}]],address:[[${maintain.memberPO.address}]],title:[[${maintain.title}]],
+                                                             description:[[${maintain.description}]],appointmentTime:[[${#dates.format(maintain.appointmentTime, 'yyyy-MM-dd HH:mm:ss')}]],createTime:[[${#dates.format(maintain.createTime, 'yyyy-MM-dd HH:mm:ss')}]],status:[[${maintain.status}]]
+                                                            }
+                                                        )"
+                                                        data-whatever="@mdo" class="btn btn-primary btn-xs"
+                                                        data-toggle="modal"
+                                                        data-target="#exampleModal">编辑
+                                                </button>
+                                                <button type="button" class="btn btn-danger btn-xs"
+                                                        th:onclick="deleteMaintain([[${maintain.id}]]) ">删除</button>
+
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <ul class="pagination">
+                                    <span hidden th:text="${activeId}"></span>
+                                    <li th:class="${maintains.getPrePage() == 0} ? 'disabled':''"><a
+                                            th:href="${maintains.getPrePage() == 0} ? 'javascript:return false' : ${maintains.getPrePage()}">«</a>
+                                    </li>
+                                    <li th:each="i: ${#numbers.sequence(1, maintains.getPages())}" class=""
+                                        th:classappend="${i == activeId} ? 'active' : ''">
+                                        <a th:href="'/backup/maintain/manage/' + ${i}" th:text="${i}"></a>
+                                    </li>
+                                    <li th:class="${maintains.getNextPage() == 0} ? 'disabled':''"><a
+                                            th:href="${maintains.getNextPage() == 0} ? 'javascript:return false' : ${maintains.getNextPage()}">»</a>
+                                    </li>
+                                </ul>
+                                <span class="hidden" id="modify-or-delete-page" th:value="${activeId}"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+        <!--End 页面主要内容-->
+    </div>
+</div>
+<!-- dialog -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">修改</h4>
+            </div>
+            <div class="modal-body" id="dialog-form-container">
+                <form id="update_form">
+                    <input type="hidden" name="id" id="dialog-id"/>
+                    <input type="hidden" name="userId" id="dialog-userid">
+                    <div class="form-group">
+                        <label for="dialog-username" class="control-label">业主名</label>
+                        <input type="text" class="form-control" id="dialog-username" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="dialog-address" class="control-label">地址</label>
+                        <input type="text" class="form-control" id="dialog-address" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="dialog-title" class="control-label">标题</label>
+                        <input type="text" class="form-control" id="dialog-title" name="title" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="dialog-description" class="control-label">描述</label>
+                        <textarea rows="5" class="form-control" id="dialog-description" name="description" readonly></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="dialog-appointmentTime" class="control-label">预约时间</label>
+                        <input type="text" class="form-control" id="dialog-appointmentTime" name="appointmentTime" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="dialog-createTime" class="control-label">创建时间</label>
+                        <input type="text" class="form-control" id="dialog-createTime" name="createTime" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="dialog-status" class="control-label">状态</label>
+                        <select name="status" class="form-control" id="dialog-status">
+                            <option value="0">未处理</option>
+                            <option value="1">已处理</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="editDialogData()">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/backage/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/backage/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/backage/js/perfect-scrollbar.min.js}"></script>
+<script type="text/javascript" th:src="@{/backage/js/main.min.js}"></script>
+<script type="text/javascript" th:src="@{/backage/js/jconfirm/jquery-confirm.min.js}"></script>
+<script type="text/javascript">
+    //这里是控制搜索框的
+    $(function () {
+        $('.search-bar .dropdown-menu a').click(function () {
+            var field = $(this).data('field') || '';
+            $('#search-field').val(field);
+            $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
+        });
+    });
+
+
+    //绑定dialog  表单值
+    let tableButtonClick = function (data) {
+        console.log(data)
+        Object.keys(data).forEach(key => {
+            $('#dialog-' + key).val(data[key])
+        })
+    }
+
+    let deleteMaintain = function (data) {
+        $.confirm({
+            title: '删除',
+            content: '是否确认删除？',
+            buttons: {
+                confirm: {
+                    text: '确认',
+                    action: function () {
+                        $.post("/maintain/delete/" + data, function (data) {
+                            var page = $('#modify-or-delete-page').attr('value');
+                            window.location.href = "/backup/maintain/manage/" + page;
+                        });
+                    }
+                },
+                cancel: {
+                    text: '关闭',
+                    action: function () {
+
+                    }
+                }
+            }
+        });
+    }
+
+    //修改内容  示例
+    let editDialogData = function () {
+        $.post("/maintain/modify", $("#update_form").serialize(), function (data) {
+            var page = $('#modify-or-delete-page').attr('value');
+            window.location.href = "/backup/maintain/manage/" + page;
+        });
+        $('#exampleModal').modal('hide')
+    }
+
+
+    //在调用 show 方法后触发。
+    $('#exampleModal').on('show.bs.modal', function (event) {
+        console.log(event)
+    })
+    //当模态框完全对用户隐藏时触发。
+    //关闭时清除dialog表单内容  貌似不需要....
+    // $('#exampleModal').on('hidden.bs.modal', function (event) {
+    //   console.log(event)
+    //   $('#dialog-form-container').find('input').val('')
+    // })
+</script>
+</body>
+
+</html>

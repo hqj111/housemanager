@@ -11,23 +11,23 @@ import java.io.PrintWriter;
  */
 public class backLoginIntercetor extends HandlerInterceptorAdapter {
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
-        Object memberPO = request.getSession().getAttribute("memberPO");
-//        System.out.println("interceptor:============" + memberPO);
-        if (memberPO != null) {
-            return true;
-        }
-
-        PrintWriter out = response.getWriter();
-        out.println("<html>");
-        out.println("<script>");
-        out.println("window.open('" + request.getContextPath() + "/go/to/login','_self')");
-        out.println("</script>");
-        out.println("</html>");
-
-        return false;
-
-    }
+//    @Override
+//    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+//
+//        Object memberPO = request.getSession().getAttribute("memberPO");
+////        System.out.println("interceptor:============" + memberPO);
+//        if (memberPO != null) {
+//            return true;
+//        }
+//
+//        PrintWriter out = response.getWriter();
+//        out.println("<html>");
+//        out.println("<script>");
+//        out.println("window.open('" + request.getContextPath() + "/go/to/login','_self')");
+//        out.println("</script>");
+//        out.println("</html>");
+//
+//        return false;
+//
+//    }
 }

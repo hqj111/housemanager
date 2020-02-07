@@ -16,7 +16,7 @@
                 </li>
                 <li class="nav-item"><a href="activityInfoPage.html"><i class="mdi mdi-receipt"></i>
                     小区活动信息管理</a></li>
-                <li class="nav-item"><a href="subscribeInfoPage.html"><i class="mdi mdi-clipboard-text"></i>
+                <li class="nav-item" th:classappend="${activeNag} == 3 ? 'active':''"><a href="/backup/maintain/manage/1"><i class="mdi mdi-clipboard-text"></i>
                     预约报修信息管理</a>
                 </li>
             </ul>
@@ -32,7 +32,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <title>用户信息管理</title>
-    <link rel="icon" type="image/icon" href="/images/users/favicon.ico"/>
+    <link rel="icon" type="image/icon" href="/images/favicon.ico"/>
     <link th:href="@{/backage/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/backage/css/materialdesignicons.min.css}" rel="stylesheet">
     <link th:href="@{/backage/js/jconfirm/jquery-confirm.min.css}" rel="stylesheet">

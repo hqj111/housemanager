@@ -12,6 +12,17 @@
   <resultMap id="ResultMapWithBLOBs" type="com.house.manager.entity.po.MaintenancePO" extends="BaseResultMap" >
     <result column="description" property="description" jdbcType="LONGVARCHAR" />
   </resultMap>
+
+  <!--自定义resultmap-->
+  <resultMap id="ResultMapCustom" type="com.house.manager.entity.po.MaintenancePOCustom" extends="BaseResultMap" >
+    <result column="description" property="description" jdbcType="LONGVARCHAR" />
+    <association property="memberPO" column="user_id"
+                 javaType="com.house.manager.entity.po.MemberPO">
+      <id column="id" property="id" />
+      <result column="username" property="username" />
+      <result column="address" property="address" />
+    </association>
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -76,6 +87,25 @@
   <sql id="Blob_Column_List" >
     description
   </sql>
+
+  <!--自定义select-->
+  <select id="selectByExampleByCustom" resultMap="ResultMapCustom" parameterType="com.house.manager.entity.po.MaintenancePOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    s.id, s.user_id, s.title, s.description, s.appointment_time, s.create_time, s.status, b.id, b.username, b.address
+
+    from tb_maintenance s
+    left join tb_member b on s.user_id = b.id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
   <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.house.manager.entity.po.MaintenancePOExample" >
     select
     <if test="distinct" >

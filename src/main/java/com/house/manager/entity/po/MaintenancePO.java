@@ -1,8 +1,9 @@
 package com.house.manager.entity.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class MaintenancePO {
+public class MaintenancePO implements Serializable {
     private Integer id;
 
     private Integer userId;
